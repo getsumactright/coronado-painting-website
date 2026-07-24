@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coronado's Painting - Printable Promotional Flyer (Dual Copy)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      --primary: #05422c;       /* Deep Forest Green */
+      --accent: #c26237;        /* Terracotta Warm */
+      --secondary: #0f2b48;     /* Deep Navy Blue */
+      --neutral-bg: #f8f9fa;    /* Cool Off-White */
+      --dark: #191c1d;          /* Dark Charcoal */
+      --gray: #64748b;          /* Cool Gray */
+      --border: #e2e8f0;        /* Light Border */
+      
+      --font-heading: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Work Sans', sans-serif;
+    }
+
+    /* ─── Global Reset ─── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: #f1f5f9;
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0;
+    }
+
+    /* ─── Interactive Web Controls (Not Printed) ─── */
+    .controls-panel {
+      background: white;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      max-width: 800px;
+      width: 90%;
+    }
+
+    .controls-panel h1 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--secondary);
+      flex-grow: 1;
+    }
+
+    .btn {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #033020;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    /* ─── Page Container & Print Specs ─── */
+    .page-sheet {
+      background: white;
+      width: 8.5in;
+      height: 11in;
+      padding: 0.5in;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ─── Flyer Layout (Half-Page) ─── */
+    .flyer {
+      height: 4.8in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0.25in;
+      border: 1px solid #f1f5f9; /* Subtle guidelines on screen */
+      position: relative;
+      background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    }
+
+    /* ─── Symmetrical Cut Guideline ─── */
+    .cut-line {
+      height: 0.4in;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cut-line::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      border-bottom: 2px dashed #cbd5e1;
+    }
+
+    .cut-line span {
+      background: white;
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #94a3b8;
+      padding: 0 10px;
+      z-index: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ─── Flyer Content Styling ─── */
+    .flyer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo-img {
+      width: 3rem;
+      height: 3rem;
+      object-fit: contain;
+    }
+
+    .brand-text h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--primary);
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .brand-text p {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .header-badge {
+      background: rgba(5, 66, 44, 0.06);
+      color: var(--primary);
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      border: 1px solid rgba(5, 66, 44, 0.15);
+      letter-spacing: 0.02em;
+    }
+
+    /* Primary Callout & Slogan */
+    .flyer-hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      margin: 0.75rem 0;
+    }
+
+    .flyer-pitch h3 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--secondary);
+      line-height: 1.25;
+      margin-bottom: 0.4rem;
+    }
+
+    .flyer-pitch p {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+
+    .flyer-cta {
+      background: var(--neutral-bg);
+      border-left: 4px solid var(--accent);
+      padding: 0.75rem 1rem;
+      border-radius: 0 8px 8px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cta-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.15rem;
+    }
+
+    .cta-phone {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--secondary);
+      line-height: 1.1;
+      text-decoration: none;
+    }
+
+    /* Core Services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .service-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.5rem;
+      text-align: center;
+      background: white;
+      transition: border-color 0.2s ease;
+    }
+
+    .service-icon {
+      width: 1.4rem;
+      height: 1.4rem;
+      fill: var(--accent);
+      margin: 0 auto 0.4rem auto;
+    }
+
+    .service-card h4 {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 0.2rem;
+    }
+
+    .service-card p {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      color: var(--gray);
+      line-height: 1.2;
+    }
+
+    /* Footer Trust Badges & Details */
+    .flyer-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 0.6rem;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .badge-pill {
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .badge-pill svg {
+      width: 0.9rem;
+      height: 0.9rem;
+      fill: var(--accent);
+    }
+
+    .yelp-mention {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: #d32323;
+    }
+
+    .yelp-mention svg {
+      width: 1rem;
+      height: 1rem;
+      fill: #d32323;
+    }
+
+    .lic-info {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    /* ─── CSS @media print Rules ─── */
+    @media print {
+      @page {
+        size: portrait;
+        margin: 0; /* Let sheet padding handle it precisely */
+      }
+
+      body {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+      }
+
+      .controls-panel {
+        display: none !important;
+      }
+
+      .page-sheet {
+        box-shadow: none !important;
+        margin: 0 !important;
+        border: none !important;
+        width: 8.5in;
+        height: 11in;
+      }
+
+      .flyer {
+        border: none !important; /* No borders in production print */
+        background: none !important;
+      }
+
+      .cut-line::before {
+        border-bottom: 2px dashed #cbd5e1 !important; /* Ensure dashed line is visible */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Controls Panel (Visible on screen only) -->
+  <div class="controls-panel">
+    <h1>📄 Coronado's Painting - Simplified Dual Flyer (8.5" x 11" sheet)</h1>
+    <button class="btn btn-secondary" onclick="window.open('index.html', '_blank')">🏠 Back to Website</button>
+    <button class="btn btn-primary" onclick="window.print()">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
+        <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+      </svg>
+      Print Dual Flyer
+    </button>
+  </div>
+
+  <!-- Standard Letter-Sized Sheet containing 2 identical flyers -->
+  <div class="page-sheet">
+    
+    <!-- TOP COPY -->
+    <div class="flyer">
+      <div class="flyer-header">
+        <div class="brand">
+          <img src="assets/logo.png" alt="Coronado's Painting Logo" class="brand-logo-img">
+          <div class="brand-text">
+            <h2>Coronado's Painting</h2>
+            <p>Fine Residential Transformation</p>
+          </div>
+        </div>
+        <div class="header-badge">★ Free Estimates</div>
+      </div>
+
+      <div class="flyer-hero">
+        <div class="flyer-pitch">
+          <h3>Beautiful Homes, Precision Finishes.</h3>
+          <p>Give your home the luxury touch it deserves. Servicing the Greater Sacramento area with elite craftsmanship and premium paints.</p>
+        </div>
+        <div class="flyer-cta">
+          <span class="cta-label">Direct Call / Text</span>
+          <a href="tel:9163018533" class="cta-phone">(916) 301-8533</a>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <!-- Paint Roller SVG -->
+          <svg class="service-icon" viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 6H5V5h14v4zM6 13h1v8c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-8h1v-2H6v2z"/>
+          </svg>
+          <h4>Interior & Exterior</h4>
+          <p>Flawless walls, ceilings, siding & trim.</p>
+        </div>
+        
+        <div class="service-card">
+          <!-- Spray Spraying / Modern Paint Brush SVG -->
+          <svg class="service-icon" viewBox="0 0 24 24">
+            <path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92.62 2.44 1 3 1 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34c-.39-.39-1.02-.39-1.41 0L9 12.25 11.75 15l8.96-8.96c.39-.39.39-1.02 0-1.41z"/>
+          </svg>
+          <h4>Cabinet Refinishing</h4>
+          <p>Factory-smooth satin spraying & finishes.</p>
+        </div>
+        
+        <div class="service-card">
+          <!-- Level/Flooring/Grid SVG -->
+          <svg class="service-icon" viewBox="0 0 24 24">
+            <path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/>
+          </svg>
+          <h4>Epoxy & Specialty</h4>
+          <p>Durable garage flooring & protections.</p>
+        </div>
+      </div>
+
+      <div class="flyer-footer">
+        <div class="badges">
+          <div class="badge-pill">
+            <!-- Shield SVG -->
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 15l-4-4 1.41-1.41L10 13.17l5.59-5.59L17 9l-7 7z"/></svg>
+            Fully Insured
+          </div>
+          <div class="yelp-mention">
+            <!-- Yelp Star SVG -->
+            <svg viewBox="0 0 24 24"><path d="M20.1 12.2c0-.5-.4-.9-.9-.9h-3.2c-.5 0-.9.4-.9.9s.4.9.9.9h3.2c.5 0 .9-.4.9-.9zm-5.7-4.4c.4.3.9.3 1.2-.1l2.1-2.4c.3-.4.3-1 0-1.3-.4-.4-.9-.4-1.2-.1l-2.1 2.4c-.3.4-.3 1 0 1.5zm-5.8 4.4c0-.5-.4-.9-.9-.9H4.5c-.5 0-.9.4-.9.9s.4.9.9.9h3.2c.5 0 .9-.4.9-.9zm2.4 2.8c-.3-.4-.9-.4-1.2-.1l-2.1 2.4c-.3.4-.3 1 0 1.3.4.4.9.4 1.2.1l2.1-2.4c.3-.4.3-1 0-1.3zm1.6-4.5c-.5 0-.9.4-.9.9v3.2c0 .5.4.9.9.9s.9-.4.9-.9V11.4c0-.5-.4-.9-.9-.9zm3.7 4.2l2.1 2.4c.3.4.9.4 1.2.1.3-.3.3-.9 0-1.3l-2.1-2.4c-.3-.4-.9-.4-1.2-.1-.4.4-.4 1 0 1.3z"/></svg>
+            Review us on Yelp!
+          </div>
+        </div>
+        <div class="lic-info">CA License #1087402</div>
+      </div>
+    </div>
+
+    <!-- DAShed CUT LINE IN THE MIDDLE -->
+    <div class="cut-line">
+      <span>✂ Cut Here for Two Half-Page Flyers ✂</span>
+    </div>
+
+    <!-- BOTTOM COPY (Identical) -->
+    <div class="flyer">
+      <div class="flyer-header">
+        <div class="brand">
+          <img src="assets/logo.png" alt="Coronado's Painting Logo" class="brand-logo-img">
+          <div class="brand-text">
+            <h2>Coronado's Painting</h2>
+            <p>Fine Residential Transformation</p>
+          </div>
+        </div>
+        <div class="header-badge">★ Free Estimates</div>
+      </div>
+
+      <div class="flyer-hero">
+        <div class="flyer-pitch">
+          <h3>Beautiful Homes, Precision Finishes.</h3>
+          <p>Give your home the luxury touch it deserves. Servicing the Greater Sacramento area with elite craftsmanship and premium paints.</p>
+        </div>
+        <div class="flyer-cta">
+          <span class="cta-label">Direct Call / Text</span>
+          <a href="tel:9163018533" class="cta-phone">(916) 301-8533</a>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 6H5V5h14v4zM6 13h1v8c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-8h1v-2H6v2z"/>
+          </svg>
+          <h4>Interior & Exterior</h4>
+          <p>Flawless walls, ceilings, siding & trim.</p>
+        </div>
+        
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24">
+            <path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92.62 2.44 1 3 1 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34c-.39-.39-1.02-.39-1.41 0L9 12.25 11.75 15l8.96-8.96c.39-.39.39-1.02 0-1.41z"/>
+          </svg>
+          <h4>Cabinet Refinishing</h4>
+          <p>Factory-smooth satin spraying & finishes.</p>
+        </div>
+        
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 24 24">
+            <path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/>
+          </svg>
+          <h4>Epoxy & Specialty</h4>
+          <p>Durable garage flooring & protections.</p>
+        </div>
+      </div>
+
+      <div class="flyer-footer">
+        <div class="badges">
+          <div class="badge-pill">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 15l-4-4 1.41-1.41L10 13.17l5.59-5.59L17 9l-7 7z"/></svg>
+            Fully Insured
+          </div>
+          <div class="yelp-mention">
+            <svg viewBox="0 0 24 24"><path d="M20.1 12.2c0-.5-.4-.9-.9-.9h-3.2c-.5 0-.9.4-.9.9s.4.9.9.9h3.2c.5 0 .9-.4.9-.9zm-5.7-4.4c.4.3.9.3 1.2-.1l2.1-2.4c.3-.4.3-1 0-1.3-.4-.4-.9-.4-1.2-.1l-2.1 2.4c-.3.4-.3 1 0 1.5zm-5.8 4.4c0-.5-.4-.9-.9-.9H4.5c-.5 0-.9.4-.9.9s.4.9.9.9h3.2c.5 0 .9-.4.9-.9zm2.4 2.8c-.3-.4-.9-.4-1.2-.1l-2.1 2.4c-.3.4-.3 1 0 1.3.4.4.9.4 1.2.1l2.1-2.4c.3-.4.3-1 0-1.3zm1.6-4.5c-.5 0-.9.4-.9.9v3.2c0 .5.4.9.9.9s.9-.4.9-.9V11.4c0-.5-.4-.9-.9-.9zm3.7 4.2l2.1 2.4c.3.4.9.4 1.2.1.3-.3.3-.9 0-1.3l-2.1-2.4c-.3-.4-.9-.4-1.2-.1-.4.4-.4 1 0 1.3z"/></svg>
+            Review us on Yelp!
+          </div>
+        </div>
+        <div class="lic-info">CA License #1087402</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
