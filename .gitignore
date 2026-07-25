@@ -15,3 +15,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Local business documents (not for the repo)
+Documents/

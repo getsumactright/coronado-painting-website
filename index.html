@@ -40,7 +40,7 @@
   <header id="header">
     <nav class="nav-container">
       <a href="#hero" class="nav-logo" id="nav-logo-link" aria-label="Coronado's Painting Home">
-        <img src="assets/logo.png" alt="Coronado's Painting Logo" class="logo-img">
+        <img src="assets/Logo_Gold_transparent.png" alt="Coronado's Painting Logo" class="logo-img">
         <span class="logo-text">Coronado's<span class="highlight"> Painting</span></span>
       </a>
 
@@ -91,7 +91,7 @@
         <!-- Hero Text -->
         <div class="hero-content">
           <img
-            src="assets/logo.png"
+            src="assets/Logo_Gold_transparent.png"
             alt="Coronado's Painting logo"
             class="hero-logo"
           />
@@ -125,12 +125,20 @@
             <h2 class="form-title">Request a Free Quote</h2>
             <p class="form-subtitle">Personalized estimates within 24 hours.</p>
 
-            <form id="quote-form" action="send-email.php" method="POST" class="interactive-form">
-              <!-- Honeypot field for spam prevention -->
+            <form id="quote-form" action="https://api.web3forms.com/submit" method="POST" class="interactive-form">
+              <!-- Web3Forms delivery configuration -->
+              <input type="hidden" name="access_key" value="ce28f9a2-4547-4b43-9f86-7ed94930f54f" />
+              <input type="hidden" name="subject" value="New Estimate Request — Coronado's Painting Website" />
+              <input type="hidden" name="from_name" value="Coronado's Painting Website" />
+              <!-- Fallback only: used if a visitor's browser has JavaScript disabled -->
+              <input type="hidden" name="redirect" value="https://coronado-painting.com/index.html?status=success" />
+
+              <!-- Honeypot fields for spam prevention -->
               <div class="visually-hidden" aria-hidden="true">
                 <label for="honeypot">Leave this blank</label>
                 <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" />
               </div>
+              <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" aria-hidden="true" />
 
               <!-- Name Fields (adjacent) -->
               <div class="form-row">
@@ -505,9 +513,32 @@
                   </svg>
                   <h4 class="card-title">Yelp Verified</h4>
                 </div>
-                <div class="yelp-stars-row">
-                  <span class="yelp-stars">★★★★★</span>
-                  <span class="yelp-rating">5.0 Rating</span>
+
+                <!--
+                  LIVE YELP RATING — powered by a small server-side proxy
+                  (yelp-rating.php) that calls the official Yelp Places API and
+                  caches the result for 24 hours. Browser JavaScript can't call
+                  Yelp's API directly — Yelp blocks cross-origin requests — so
+                  this needs to run on a PHP-enabled host (the same one the
+                  quote form uses).
+
+                  To activate:
+                    1. Get an API key at https://business.yelp.com/data
+                       (requires choosing a plan / starting a trial).
+                    2. Open yelp-rating.php and replace YOUR_YELP_API_KEY_HERE
+                       with that key.
+                    3. Confirm YELP_BUSINESS_ALIAS in that file matches your
+                       Yelp business slug (currently "coronados-painting-roseville",
+                       taken from the Yelp link used elsewhere on this page).
+                    4. Upload yelp-rating.php to the same folder as index.html
+                       on your live host.
+
+                  Until the key is added, app.js's fetch() to yelp-rating.php
+                  fails quietly and this static fallback stays on screen.
+                -->
+                <div id="yelp-widget-embed" class="yelp-stars-row">
+                  <span class="yelp-stars" id="yelp-stars-display">★★★★★</span>
+                  <span class="yelp-rating" id="yelp-rating-display">5.0 Rating</span>
                 </div>
                 <p class="card-desc">Check out customer reviews on our professional exterior weather sealing and cabinet painting.</p>
                 <a href="https://www.yelp.com/biz/coronados-painting-roseville" target="_blank" rel="noopener noreferrer" class="yelp-block-btn">
@@ -597,7 +628,7 @@
         <div class="footer-col brand-col">
           <div class="footer-logo">
             <div class="footer-logo-img-wrapper">
-              <img src="assets/logo.png" alt="Coronado's Painting Logo" class="footer-logo-img">
+              <img src="assets/Logo_Gold_transparent.png" alt="Coronado's Painting Logo" class="footer-logo-img">
             </div>
             <span class="logo-text">Coronado's<span class="highlight"> Painting</span></span>
           </div>
@@ -658,6 +689,19 @@
       <polyline points="5 12 12 5 19 12"></polyline>
     </svg>
   </button>
+
+  <!-- Sticky Mobile Call Bar — visible only on small screens (see @media max-width: 768px).
+       Fixes the mobile UX gap where the header's Call button is hidden inside the
+       hamburger drawer; this gives phone/quote actions one tap away at all times. -->
+  <div class="mobile-call-bar" id="mobile-call-bar">
+    <div class="mobile-call-bar-inner">
+      <a href="tel:9163018533" class="mobile-call-btn" aria-label="Call Coronado's Painting at (916) 301-8533">
+        <svg class="phone-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        Call Now
+      </a>
+      <a href="#quote-section" class="mobile-quote-btn">Get Free Quote</a>
+    </div>
+  </div>
 
   <!-- Script logic -->
   <script src="app.js"></script>

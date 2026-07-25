@@ -163,12 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Handle Form Mutating Submissions
+  // Handle Form Mutating Submissions — delivered via Web3Forms (no server/PHP required)
   quoteForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Always intercept; we submit via fetch() below
+
     // Prevent spam bot submissions via hidden honeypot
     const honeypot = document.getElementById('honeypot').value;
     if (honeypot) {
-      e.preventDefault();
       console.warn('Spam submission detected.');
       return;
     }
@@ -189,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (!formIsValid) {
-      e.preventDefault(); // Block submission if errors exist
       // Direct reader focus to first invalid element
       if (firstInvalidElement) {
         firstInvalidElement.focus();
@@ -197,30 +197,70 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Let form submit natively to send-email.php since it is 100% valid!
+    // Build a friendlier, more identifiable email subject now that we know who's submitting
+    const firstNameVal = inputs.firstName.el.value.trim();
+    const lastNameVal = inputs.lastName.el.value.trim();
+    const serviceLabel = inputs.serviceType.el.selectedOptions[0]
+      ? inputs.serviceType.el.selectedOptions[0].text
+      : inputs.serviceType.el.value;
+    const subjectInput = quoteForm.querySelector('input[name="subject"]');
+    if (subjectInput) {
+      subjectInput.value = `New Quote Request: ${firstNameVal} ${lastNameVal} — ${serviceLabel}`;
+    }
+
     const submitBtn = document.getElementById('submit-quote-btn');
-    setTimeout(() => {
-      submitBtn.disabled = true;
-      submitBtn.querySelector('.btn-text').textContent = 'Sending...';
-    }, 10);
+    const btnTextEl = submitBtn.querySelector('.btn-text');
+    submitBtn.disabled = true;
+    btnTextEl.textContent = 'Sending...';
+
+    const formData = new FormData(quoteForm);
+    const payload = Object.fromEntries(formData);
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(async (response) => {
+        const result = await response.json().catch(() => ({}));
+
+        if (response.ok && result.success) {
+          // Populate and reveal the success overlay — no page reload needed
+          successNameText.textContent = firstNameVal || 'Client';
+          successContactText.textContent = inputs.phone.el.value || inputs.email.el.value || 'your phone/email';
+          successOverlay.classList.add('show');
+          successOverlay.setAttribute('aria-hidden', 'false');
+          quoteForm.reset();
+        } else {
+          console.error('Web3Forms submission error:', result);
+          alert("Oops! There was a problem sending your quote request. Please call Ramon Coronado directly at (916) 301-8533!");
+        }
+      })
+      .catch((error) => {
+        console.error('Network error submitting form:', error);
+        alert("Oops! There was a problem sending your quote request. Please call Ramon Coronado directly at (916) 301-8533!");
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        btnTextEl.textContent = 'Submit Request';
+      });
   });
 
-  // Check URL parameters for redirection status from send-email.php
+  // Fallback: if a visitor's browser has JavaScript disabled, the form still posts
+  // natively to Web3Forms and redirects back here with ?status=success — show a
+  // generic (non-personalized) success overlay in that case.
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('status') === 'success') {
-    const successName = urlParams.get('name') || 'Client';
-    const successContact = urlParams.get('contact') || 'your phone/email';
-    
-    successNameText.textContent = decodeURIComponent(successName);
-    successContactText.textContent = decodeURIComponent(successContact);
-    
+    successNameText.textContent = 'Client';
+    successContactText.textContent = 'your phone/email';
+
     successOverlay.classList.add('show');
     successOverlay.setAttribute('aria-hidden', 'false');
 
     // Clean URL query parameters so page refresh doesn't pop up success card again
-    window.history.replaceState({}, document.title, window.location.pathname);
-  } else if (urlParams.get('status') === 'error') {
-    alert("Oops! There was a server error sending your quote request. Please call Ramon Coronado directly at (916) 301-8533!");
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
@@ -385,6 +425,32 @@ document.addEventListener('DOMContentLoaded', () => {
         showSlide(slideIndex);
       });
     });
+  }
+
+
+  // ─── 6b. Live Yelp Rating (via yelp-rating.php server-side proxy) ──────
+  // Browser JS can't call Yelp's API directly (CORS-blocked), so this fetches
+  // our own same-origin PHP proxy instead. If the proxy isn't configured yet
+  // (no API key) or the request fails for any reason, this fails silently and
+  // the static "5.0 Rating" fallback already in the HTML stays on screen.
+  const yelpRatingDisplay = document.getElementById('yelp-rating-display');
+
+  if (yelpRatingDisplay) {
+    fetch('yelp-rating.php')
+      .then((response) => {
+        if (!response.ok) throw new Error('Yelp proxy not ready');
+        return response.json();
+      })
+      .then((data) => {
+        if (data && typeof data.rating === 'number') {
+          const count = data.review_count;
+          const reviewText = count ? ` (${count} review${count === 1 ? '' : 's'})` : '';
+          yelpRatingDisplay.textContent = `${data.rating.toFixed(1)} Rating${reviewText}`;
+        }
+      })
+      .catch(() => {
+        // Proxy not configured yet or Yelp unreachable — keep static fallback text.
+      });
   }
 
 

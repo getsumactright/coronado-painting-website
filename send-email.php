@@ -1,6 +1,11 @@
 <?php
 /**
  * Coronado's Painting - Form Mailer Script
+ *
+ * NOTE: As of this update, the quote form on index.html submits directly to
+ * Web3Forms (https://web3forms.com) via JavaScript instead of posting here.
+ * This file is no longer wired up and is kept only as a reference/fallback —
+ * it can be safely deleted once Web3Forms delivery is confirmed working.
  */
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
