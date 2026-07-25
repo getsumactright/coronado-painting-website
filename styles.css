@@ -1747,33 +1747,6 @@ a.contact-value:hover {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.designer-bytext {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.footer-flyer-link {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  color: var(--tertiary);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: color var(--transition-fast) ease, transform var(--transition-fast) ease;
-}
-
-.footer-flyer-link:hover {
-  color: var(--accent);
-  transform: translateY(-1px);
-}
-
-.footer-flyer-link svg {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 /* ─── Back to Top Button ────────────────────────────────── */
 .back-to-top {
   position: fixed;
