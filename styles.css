@@ -423,7 +423,8 @@ img {
 .hero-logo {
   /* width drives the size so the logo aligns with the badge below it.
      clamp: 200px floor, 65vw fluid (≈325px at 500px, fills badge width),
-     320px ceiling on large screens. height:auto preserves 1:1 aspect ratio. */
+     320px ceiling on large screens. height:auto preserves the logo's
+     native aspect ratio (wide text wordmark, ~2.5:1). */
   width: clamp(200px, 65vw, 320px);
   height: auto;
   object-fit: contain;
