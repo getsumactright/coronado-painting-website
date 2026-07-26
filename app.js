@@ -286,144 +286,139 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // ─── 5. Accessible Before/After Image Sliders (Multi-instance support) ───
-  const sliders = document.querySelectorAll('.comparison-slider');
+  // ─── 5. Project Gallery Carousel & Lightbox ────────────────
+  const galleryTrack = document.getElementById('galleryTrack');
 
-  sliders.forEach(slider => {
-    const beforeImgContainer = slider.querySelector('.image-before');
-    const handle = slider.querySelector('.slider-handle');
+  if (galleryTrack) {
+    const galleryItems = Array.from(galleryTrack.querySelectorAll('.gallery-item'));
+    const dotsContainer = document.getElementById('galleryDots');
+    const prevBtn = document.getElementById('galleryPrev');
+    const nextBtn = document.getElementById('galleryNext');
 
-    if (beforeImgContainer && handle) {
-      let isDragging = false;
-
-      function setSliderPercentage(percent) {
-        const constrainedPercent = Math.max(0, Math.min(100, percent));
-        beforeImgContainer.style.clipPath = `polygon(0 0, ${constrainedPercent}% 0, ${constrainedPercent}% 100%, 0 100%)`;
-        handle.style.left = `${constrainedPercent}%`;
-        handle.setAttribute('aria-valuenow', Math.round(constrainedPercent));
-      }
-
-      function calculatePercent(clientX) {
-        const rect = slider.getBoundingClientRect();
-        const relativeX = clientX - rect.left;
-        return (relativeX / rect.width) * 100;
-      }
-
-      // Mouse Events
-      slider.addEventListener('mousedown', (e) => {
-        if (e.button === 0) {
-          isDragging = true;
-          updateSliderPosition(e);
-        }
+    // Build one slide-indicator dot per photo
+    galleryItems.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Go to photo ${i + 1} of ${galleryItems.length}`);
+      dot.addEventListener('click', () => {
+        galleryItems[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       });
+      dotsContainer.appendChild(dot);
+    });
+    const dots = Array.from(dotsContainer.children);
 
-      window.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-          updateSliderPosition(e);
-        }
-      });
-
-      window.addEventListener('mouseup', () => {
-        isDragging = false;
-      });
-
-      // Touch Events (Mobile support)
-      slider.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        updateSliderPosition(e.touches[0]);
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (e) => {
-        if (isDragging) {
-          updateSliderPosition(e.touches[0]);
-        }
-      }, { passive: true });
-
-      window.addEventListener('touchend', () => {
-        isDragging = false;
-      });
-
-      function updateSliderPosition(pointerEvent) {
-        const percent = calculatePercent(pointerEvent.clientX);
-        setSliderPercentage(percent);
-      }
-
-      // Keyboard Controls (Aria accessibility)
-      handle.addEventListener('keydown', (e) => {
-        let currentVal = parseInt(handle.getAttribute('aria-valuenow')) || 50;
-
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          setSliderPercentage(currentVal - 5);
-        } else if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          setSliderPercentage(currentVal + 5);
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          setSliderPercentage(0);
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          setSliderPercentage(100);
-        }
-      });
-    }
-  });
-
-  // ─── Before/After Carousel Logic ───
-  const carousel = document.getElementById('before-after-carousel');
-  if (carousel) {
-    const slides = carousel.querySelectorAll('.carousel-slide');
-    const dots = carousel.querySelectorAll('.carousel-dot');
-    const prevBtn = document.getElementById('carousel-prev');
-    const nextBtn = document.getElementById('carousel-next');
-    let currentSlide = 0;
-    const totalSlides = slides.length;
-
-    function showSlide(index) {
-      // Loop bounds
-      if (index >= totalSlides) {
-        currentSlide = 0;
-      } else if (index < 0) {
-        currentSlide = totalSlides - 1;
-      } else {
-        currentSlide = index;
-      }
-
-      // Update active states
-      slides.forEach((slide, i) => {
-        if (i === currentSlide) {
-          slide.classList.add('active');
-        } else {
-          slide.classList.remove('active');
-        }
-      });
-
+    function setActiveDot(index) {
       dots.forEach((dot, i) => {
-        if (i === currentSlide) {
-          dot.classList.add('active');
+        const isActive = i === index;
+        dot.classList.toggle('active', isActive);
+        if (isActive) {
           dot.setAttribute('aria-current', 'true');
         } else {
-          dot.classList.remove('active');
           dot.removeAttribute('aria-current');
         }
       });
     }
+    setActiveDot(0);
 
-    if (prevBtn && nextBtn) {
-      prevBtn.addEventListener('click', () => {
-        showSlide(currentSlide - 1);
+    // Track whichever slide is most visible in the track to keep dots in sync,
+    // whether the user swipes, drags the scrollbar, or clicks the arrows/dots.
+    const visibleRatios = new Map();
+    const dotObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => visibleRatios.set(entry.target, entry.intersectionRatio));
+      let bestIndex = 0;
+      let bestRatio = 0;
+      galleryItems.forEach((item, i) => {
+        const ratio = visibleRatios.get(item) || 0;
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          bestIndex = i;
+        }
       });
+      setActiveDot(bestIndex);
+    }, { root: galleryTrack, threshold: [0, 0.25, 0.5, 0.75, 1] });
 
-      nextBtn.addEventListener('click', () => {
-        showSlide(currentSlide + 1);
-      });
+    galleryItems.forEach((item) => dotObserver.observe(item));
+
+    function scrollByCards(direction) {
+      const cardWidth = galleryItems[0].getBoundingClientRect().width;
+      const trackGap = parseFloat(getComputedStyle(galleryTrack).gap) || 24;
+      galleryTrack.scrollBy({ left: direction * (cardWidth + trackGap), behavior: 'smooth' });
     }
 
-    dots.forEach(dot => {
-      dot.addEventListener('click', (e) => {
-        const slideIndex = parseInt(e.target.getAttribute('data-slide'));
-        showSlide(slideIndex);
+    if (prevBtn) prevBtn.addEventListener('click', () => scrollByCards(-1));
+    if (nextBtn) nextBtn.addEventListener('click', () => scrollByCards(1));
+
+    // ─── Lightbox (click or Enter/Space on a photo to open) ───
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+    let lightboxIndex = 0;
+    let lastFocusedEl = null;
+
+    function updateLightboxImage() {
+      const item = galleryItems[lightboxIndex];
+      const img = item.querySelector('img');
+      const caption = item.querySelector('figcaption');
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = caption ? caption.textContent : '';
+    }
+
+    function openLightbox(index) {
+      lightboxIndex = index;
+      lastFocusedEl = document.activeElement;
+      updateLightboxImage();
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-open');
+      lightboxClose.focus();
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-open');
+      if (lastFocusedEl) lastFocusedEl.focus();
+    }
+
+    function showNextPhoto() {
+      lightboxIndex = (lightboxIndex + 1) % galleryItems.length;
+      updateLightboxImage();
+    }
+
+    function showPrevPhoto() {
+      lightboxIndex = (lightboxIndex - 1 + galleryItems.length) % galleryItems.length;
+      updateLightboxImage();
+    }
+
+    galleryItems.forEach((item, i) => {
+      const img = item.querySelector('img');
+      img.addEventListener('click', () => openLightbox(i));
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(i);
+        }
       });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxNext.addEventListener('click', showNextPhoto);
+    lightboxPrev.addEventListener('click', showPrevPhoto);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowRight') showNextPhoto();
+      else if (e.key === 'ArrowLeft') showPrevPhoto();
     });
   }
 
