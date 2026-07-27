@@ -9,25 +9,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileLinks = document.querySelectorAll('.mobile-link');
 
-  function toggleMobileMenu() {
-    const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.setAttribute('aria-expanded', !isExpanded);
-    mobileMenu.classList.toggle('open');
-    mobileMenu.setAttribute('aria-hidden', isExpanded);
-    document.body.style.overflow = isExpanded ? '' : 'hidden'; // Lock background scroll when open
-  }
+  if (hamburger && mobileMenu) {
+    function toggleMobileMenu() {
+      const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !isExpanded);
+      mobileMenu.classList.toggle('open');
+      mobileMenu.setAttribute('aria-hidden', isExpanded);
+      document.body.style.overflow = isExpanded ? '' : 'hidden'; // Lock background scroll when open
+    }
 
-  hamburger.addEventListener('click', toggleMobileMenu);
+    hamburger.addEventListener('click', toggleMobileMenu);
 
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      // Close drawer upon clicking any navigation target
-      hamburger.setAttribute('aria-expanded', 'false');
-      mobileMenu.classList.remove('open');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        // Close drawer upon clicking any navigation target
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.remove('open');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
     });
-  });
+  }
 
 
   // ─── 2. Scroll Events (Header Blur & Back to Top) ────────
@@ -38,50 +40,60 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollY = window.scrollY;
 
     // Header styling shift
-    if (scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+    if (header) {
+      if (scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     }
 
     // Back to top appearance
-    if (scrollY > 400) {
-      backToTopBtn.classList.add('show');
-    } else {
-      backToTopBtn.classList.remove('show');
+    if (backToTopBtn) {
+      if (scrollY > 400) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
     }
   });
 
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
-  });
+  }
 
 
   // ─── 3. Dynamic Phone Number Input Formatting ─────────────
   const phoneInput = document.getElementById('phone');
 
-  phoneInput.addEventListener('input', (e) => {
-    let input = e.target.value.replace(/\D/g, ''); // Extract numbers only
-    const length = input.length;
+  if (phoneInput) {
+    phoneInput.addEventListener('input', (e) => {
+      let input = e.target.value.replace(/\D/g, ''); // Extract numbers only
+      const length = input.length;
 
-    // Auto-formatting (123) 456-7890
-    if (length === 0) {
-      e.target.value = '';
-    } else if (length <= 3) {
-      e.target.value = `(${input}`;
-    } else if (length <= 6) {
-      e.target.value = `(${input.slice(0, 3)}) ${input.slice(3)}`;
-    } else {
-      e.target.value = `(${input.slice(0, 3)}) ${input.slice(3, 6)}-${input.slice(6, 10)}`;
-    }
-  });
+      // Auto-formatting (123) 456-7890
+      if (length === 0) {
+        e.target.value = '';
+      } else if (length <= 3) {
+        e.target.value = `(${input}`;
+      } else if (length <= 6) {
+        e.target.value = `(${input.slice(0, 3)}) ${input.slice(3)}`;
+      } else {
+        e.target.value = `(${input.slice(0, 3)}) ${input.slice(3, 6)}-${input.slice(6, 10)}`;
+      }
+    });
+  }
 
 
   // ─── 4. Strict Form UX & Validation ───────────────────────
   const quoteForm = document.getElementById('quote-form');
+
+  if (quoteForm) {
   const successOverlay = document.getElementById('form-success-container');
   const successNameText = document.getElementById('success-user-name');
   const successContactText = document.getElementById('success-user-contact');
@@ -269,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
     successOverlay.classList.remove('show');
     successOverlay.setAttribute('aria-hidden', 'true');
   });
+  } // end if (quoteForm)
 
 
   // ─── 4b. Sync aria-invalid with CSS :user-invalid state ───
@@ -352,6 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── Lightbox (click or Enter/Space on a photo to open) ───
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxVideo = document.getElementById('lightboxVideo');
     const lightboxCaption = document.getElementById('lightboxCaption');
     const lightboxClose = document.getElementById('lightboxClose');
     const lightboxPrev = document.getElementById('lightboxPrev');
@@ -359,19 +373,37 @@ document.addEventListener('DOMContentLoaded', () => {
     let lightboxIndex = 0;
     let lastFocusedEl = null;
 
-    function updateLightboxImage() {
+    function updateLightboxMedia() {
       const item = galleryItems[lightboxIndex];
       const img = item.querySelector('img');
       const caption = item.querySelector('figcaption');
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
+      const videoSrc = img.dataset.video;
+
+      lightboxVideo.pause();
+
+      if (videoSrc) {
+        lightboxImg.style.display = 'none';
+        lightboxVideo.style.display = 'block';
+        lightboxVideo.poster = img.src;
+        if (lightboxVideo.getAttribute('src') !== videoSrc) {
+          lightboxVideo.src = videoSrc;
+        }
+        lightboxVideo.play().catch(() => {});
+      } else {
+        lightboxVideo.style.display = 'none';
+        lightboxVideo.removeAttribute('src');
+        lightboxVideo.load();
+        lightboxImg.style.display = 'block';
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+      }
       lightboxCaption.textContent = caption ? caption.textContent : '';
     }
 
     function openLightbox(index) {
       lightboxIndex = index;
       lastFocusedEl = document.activeElement;
-      updateLightboxImage();
+      updateLightboxMedia();
       lightbox.classList.add('is-open');
       lightbox.setAttribute('aria-hidden', 'false');
       document.body.classList.add('lightbox-open');
@@ -382,17 +414,18 @@ document.addEventListener('DOMContentLoaded', () => {
       lightbox.classList.remove('is-open');
       lightbox.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('lightbox-open');
+      lightboxVideo.pause();
       if (lastFocusedEl) lastFocusedEl.focus();
     }
 
     function showNextPhoto() {
       lightboxIndex = (lightboxIndex + 1) % galleryItems.length;
-      updateLightboxImage();
+      updateLightboxMedia();
     }
 
     function showPrevPhoto() {
       lightboxIndex = (lightboxIndex - 1 + galleryItems.length) % galleryItems.length;
-      updateLightboxImage();
+      updateLightboxMedia();
     }
 
     galleryItems.forEach((item, i) => {
