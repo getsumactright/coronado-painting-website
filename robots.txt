@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://coronado-painting.com/sitemap.xml
+Sitemap: https://coronadospainting.net/sitemap.xml
