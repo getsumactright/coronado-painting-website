@@ -9,14 +9,14 @@
    in git history — see the "theme-preview" branch pattern used
    previously in this repo to compare/revert. ───────────────── */
 :root {
-  /* HSL Colors — Gold & Black preview palette */
-  --primary-hsl:       40, 18%, 20%;   /* Warm Black       #3C362A */
-  --secondary-hsl:     40, 22%, 8%;    /* Near-Black       #191610 */
-  --tertiary-hsl:      46, 65%, 52%;   /* Bright Gold      #D4AF35 */
-  --accent-hsl:        38, 62%, 36%;   /* Deep Antique Gold #956B23 */
-  --neutral-bg-hsl:    40, 25%, 97%;   /* Warm Ivory       #F9F8F5 */
-  --sage-muted-hsl:    40, 10%, 55%;   /* Warm Muted Gray */
-  --slate-gray-hsl:    38, 10%, 42%;   /* Warm Slate Gray */
+  /* HSL Colors — Red, White & Navy logo palette */
+  --primary-hsl:       220, 71%, 25%;  /* Logo Navy        #12306D */
+  --secondary-hsl:     221, 70%, 11%;  /* Deep Navy        #08142F */
+  --tertiary-hsl:      356, 85%, 62%;  /* Bright Red (on dark) #F14955 */
+  --accent-hsl:        356, 78%, 45%;  /* Logo Red         #CC1926 */
+  --neutral-bg-hsl:    216, 40%, 97%;  /* Cool White       #F5F7FB */
+  --sage-muted-hsl:    218, 12%, 55%;   /* Warm Muted Gray */
+  --slate-gray-hsl:    218, 14%, 40%;   /* Warm Slate Gray */
 
   /* Compiled Colors */
   --primary:           hsl(var(--primary-hsl));
@@ -120,7 +120,7 @@ img {
   z-index: 1000;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(25, 22, 16, 0.05);
+  border-bottom: 1px solid rgba(8, 20, 47, 0.05);
   background-color: rgba(248, 249, 250, 0.8);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -131,7 +131,7 @@ img {
 #header.scrolled {
   height: 70px;
   background-color: rgba(248, 249, 250, 0.95);
-  border-bottom: 1px solid rgba(60, 54, 42, 0.1);
+  border-bottom: 1px solid rgba(18, 48, 109, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
 }
 
@@ -158,7 +158,7 @@ img {
 }
 
 .logo-img {
-  height: 50px;
+  height: 62px;
   width: auto;
   object-fit: contain;
   transition: height var(--transition-smooth), transform var(--transition-smooth);
@@ -166,7 +166,7 @@ img {
 }
 
 #header.scrolled .logo-img {
-  height: 44px;
+  height: 52px;
 }
 
 .nav-logo:hover .logo-img {
@@ -269,13 +269,13 @@ img {
   padding: 10px 20px;
   border-radius: var(--radius-full);
   transition: transform var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
-  box-shadow: 0 4px 14px rgba(60, 54, 42, 0.2);
+  box-shadow: 0 4px 14px rgba(18, 48, 109, 0.2);
 }
 
 .nav-phone:hover {
   background-color: var(--secondary);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(25, 22, 16, 0.25);
+  box-shadow: 0 6px 20px rgba(8, 20, 47, 0.25);
 }
 
 .phone-icon {
@@ -373,7 +373,7 @@ img {
   padding: 14px 28px;
   border-radius: var(--radius-full);
   margin-top: 16px;
-  box-shadow: 0 4px 14px rgba(149, 107, 35, 0.3);
+  box-shadow: 0 4px 14px rgba(204, 25, 38, 0.3);
 }
 
 /* ─── Hero Section with Quote Form ─────────────────────────── */
@@ -409,7 +409,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(25, 22, 16, 0.96) 0%, rgba(60, 54, 42, 0.88) 55%, rgba(25, 28, 29, 0.82) 100%);
+  background: linear-gradient(135deg, rgba(8, 20, 47, 0.96) 0%, rgba(18, 48, 109, 0.88) 55%, rgba(25, 28, 29, 0.82) 100%);
   z-index: 2;
 }
 
@@ -465,8 +465,8 @@ img {
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--tertiary); /* bright gold reads far better than deep gold against the dark hero */
-  background-color: rgba(212, 175, 53, 0.15);
-  border: 1px solid rgba(212, 175, 53, 0.3);
+  background-color: rgba(241, 73, 85, 0.15);
+  border: 1px solid rgba(241, 73, 85, 0.3);
   padding: 6px 14px;
   border-radius: var(--radius-full);
   text-transform: uppercase;
@@ -489,7 +489,7 @@ img {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #f4e6be, #dec37c);
+  background: linear-gradient(90deg, #ffd9dc, #ff7a83);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -520,7 +520,7 @@ img {
 }
 
 .trust-check {
-  color: #f4e6be;
+  color: #ffd9dc;
   font-weight: 900;
 }
 
@@ -609,8 +609,8 @@ img {
 .form-group select:focus,
 .form-group textarea:focus {
   background: rgba(255, 255, 255, 0.12);
-  border-color: #dec37c;
-  box-shadow: 0 0 0 3px rgba(222, 195, 124, 0.25);
+  border-color: #ff7a83;
+  box-shadow: 0 0 0 3px rgba(255, 122, 131, 0.25);
 }
 
 .form-group select {
@@ -638,7 +638,7 @@ img {
 }
 
 .form-group select:focus + .select-wrapper::after {
-  color: #dec37c;
+  color: #ff7a83;
 }
 
 .form-group select option {
@@ -690,8 +690,8 @@ img {
 .form-group textarea:user-valid {
   /* Gold, not the near-black primary — primary would be invisible against
      this dark glassmorphic form now that the theme is black/gold. */
-  border-color: rgba(212, 175, 53, 0.55);
-  box-shadow: 0 0 0 3px rgba(212, 175, 53, 0.12);
+  border-color: rgba(241, 73, 85, 0.55);
+  box-shadow: 0 0 0 3px rgba(241, 73, 85, 0.12);
 }
 
 /* Submit Form Button */
@@ -712,14 +712,14 @@ img {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 20px rgba(149, 107, 35, 0.3);
+  box-shadow: 0 4px 20px rgba(204, 25, 38, 0.3);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
   min-height: 48px;
 }
 
 .submit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(149, 107, 35, 0.45);
+  box-shadow: 0 8px 30px rgba(204, 25, 38, 0.45);
 }
 
 .submit-btn:active {
@@ -743,7 +743,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(25, 22, 16, 0.98);
+  background: rgba(8, 20, 47, 0.98);
   z-index: 10;
   display: flex;
   align-items: center;
@@ -776,9 +776,9 @@ img {
   border-radius: var(--radius-full);
   display: block;
   stroke-width: 2;
-  stroke: #dec37c;
+  stroke: #ff7a83;
   stroke-miterlimit: 10;
-  box-shadow: inset 0px 0px 0px #dec37c;
+  box-shadow: inset 0px 0px 0px #ff7a83;
   margin: 0 auto 24px;
 }
 
@@ -911,7 +911,7 @@ img {
 
 .service-card {
   background-color: var(--neutral-bg);
-  border: 1px solid rgba(25, 22, 16, 0.05);
+  border: 1px solid rgba(8, 20, 47, 0.05);
   border-radius: var(--radius-lg);
   transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
   position: relative;
@@ -920,8 +920,8 @@ img {
 
 .service-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(60, 54, 42, 0.15);
-  box-shadow: 0 16px 40px rgba(25, 22, 16, 0.06);
+  border-color: rgba(18, 48, 109, 0.15);
+  box-shadow: 0 16px 40px rgba(8, 20, 47, 0.06);
 }
 
 .service-card-image {
@@ -985,7 +985,7 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent);
-  background-color: rgba(149, 107, 35, 0.08);
+  background-color: rgba(204, 25, 38, 0.08);
   padding: 4px 12px;
   border-radius: var(--radius-full);
 }
@@ -994,7 +994,7 @@ img {
 .showcase-section {
   padding: 80px 24px 96px;
   background-color: var(--neutral-bg);
-  border-block: 1px solid rgba(25, 22, 16, 0.05);
+  border-block: 1px solid rgba(8, 20, 47, 0.05);
   content-visibility: auto;
   contain-intrinsic-size: auto none auto 750px;
 }
@@ -1049,13 +1049,13 @@ img {
   letter-spacing: 0.08em;
   padding: 16px 36px;
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 20px rgba(149, 107, 35, 0.3);
+  box-shadow: 0 4px 20px rgba(204, 25, 38, 0.3);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .cta-band-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(149, 107, 35, 0.45);
+  box-shadow: 0 8px 30px rgba(204, 25, 38, 0.45);
 }
 
 .showcase-info {
@@ -1094,7 +1094,7 @@ img {
   border-radius: var(--radius-full);
   flex-shrink: 0;
   margin-top: 9px;
-  box-shadow: 0 0 10px rgba(212, 175, 53, 0.4);
+  box-shadow: 0 0 10px rgba(241, 73, 85, 0.4);
 }
 
 .showcase-bullet h3 {
@@ -1138,8 +1138,8 @@ img {
   scroll-snap-align: center;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(25, 22, 16, 0.12);
-  border: 1px solid rgba(25, 22, 16, 0.08);
+  box-shadow: 0 20px 60px rgba(8, 20, 47, 0.12);
+  border: 1px solid rgba(8, 20, 47, 0.08);
   background-color: var(--white);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -1158,7 +1158,7 @@ img {
 
 .gallery-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 24px 70px rgba(25, 22, 16, 0.18);
+  box-shadow: 0 24px 70px rgba(8, 20, 47, 0.18);
 }
 
 .gallery-item img {
@@ -1203,7 +1203,7 @@ img {
 }
 
 .gallery-item-video:hover .play-button {
-  background: rgba(149, 107, 35, 0.9);
+  background: rgba(204, 25, 38, 0.9);
   transform: translate(-50%, -50%) scale(1.08);
 }
 
@@ -1224,13 +1224,13 @@ img {
   height: 46px;
   border-radius: var(--radius-full);
   background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(25, 22, 16, 0.1);
+  border: 1px solid rgba(8, 20, 47, 0.1);
   color: var(--primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(25, 22, 16, 0.15);
+  box-shadow: 0 8px 24px rgba(8, 20, 47, 0.15);
   z-index: 10;
   transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
@@ -1284,7 +1284,7 @@ img {
   width: 10px;
   height: 10px;
   border-radius: var(--radius-full);
-  background-color: rgba(25, 22, 16, 0.2);
+  background-color: rgba(8, 20, 47, 0.2);
   border: none;
   cursor: pointer;
   transition: background-color var(--transition-fast), transform var(--transition-fast);
@@ -1292,7 +1292,7 @@ img {
 }
 
 .carousel-dot:hover {
-  background-color: rgba(25, 22, 16, 0.4);
+  background-color: rgba(8, 20, 47, 0.4);
 }
 
 .carousel-dot.active {
@@ -1456,8 +1456,8 @@ body.lightbox-open {
   }
 
   .why-card {
-    border: 1px solid rgba(25, 22, 16, 0.07);
-    box-shadow: 0 2px 12px rgba(25, 22, 16, 0.04);
+    border: 1px solid rgba(8, 20, 47, 0.07);
+    box-shadow: 0 2px 12px rgba(8, 20, 47, 0.04);
   }
 }
 
@@ -1465,14 +1465,14 @@ body.lightbox-open {
   background-color: var(--neutral-bg);
   border-radius: var(--radius-lg);
   padding: 40px 32px;
-  border: 1px solid rgba(25, 22, 16, 0.03);
+  border: 1px solid rgba(8, 20, 47, 0.03);
   position: relative;
   transition: transform var(--transition-smooth), border-color var(--transition-smooth);
 }
 
 .why-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(149, 107, 35, 0.15);
+  border-color: rgba(204, 25, 38, 0.15);
 }
 
 .why-num {
@@ -1480,7 +1480,7 @@ body.lightbox-open {
   font-size: 2.5rem;
   font-weight: 800;
   line-height: 1;
-  background: linear-gradient(135deg, rgba(25, 22, 16, 0.1) 0%, rgba(60, 54, 42, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(8, 20, 47, 0.1) 0%, rgba(18, 48, 109, 0.05) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 20px;
@@ -1541,8 +1541,8 @@ body.lightbox-open {
   background-color: var(--white);
   border-radius: var(--radius-lg);
   padding: 32px;
-  border: 1px solid rgba(25, 22, 16, 0.06);
-  box-shadow: 0 10px 30px rgba(25, 22, 16, 0.03);
+  border: 1px solid rgba(8, 20, 47, 0.06);
+  box-shadow: 0 10px 30px rgba(8, 20, 47, 0.03);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1554,8 +1554,8 @@ body.lightbox-open {
   background-color: var(--white);
   border-radius: var(--radius-lg);
   padding: 32px;
-  border: 1px solid rgba(25, 22, 16, 0.06);
-  box-shadow: 0 10px 30px rgba(25, 22, 16, 0.03);
+  border: 1px solid rgba(8, 20, 47, 0.06);
+  box-shadow: 0 10px 30px rgba(8, 20, 47, 0.03);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1652,8 +1652,8 @@ body.lightbox-open {
   display: flex;
   align-items: center;
   gap: 16px;
-  background-color: rgba(60, 54, 42, 0.05);
-  border: 1px solid rgba(60, 54, 42, 0.1);
+  background-color: rgba(18, 48, 109, 0.05);
+  border: 1px solid rgba(18, 48, 109, 0.1);
   padding: 14px 20px;
   border-radius: var(--radius-md);
   color: var(--primary);
@@ -1698,7 +1698,7 @@ body.lightbox-open {
 
 .city-badge {
   background-color: var(--white);
-  border: 1px solid rgba(25, 22, 16, 0.04);
+  border: 1px solid rgba(8, 20, 47, 0.04);
   border-radius: var(--radius-md);
   padding: 18px 24px;
   display: flex;
@@ -1709,8 +1709,8 @@ body.lightbox-open {
 
 .city-badge:hover {
   transform: translateY(-3px);
-  border-color: rgba(60, 54, 42, 0.1);
-  box-shadow: 0 8px 24px rgba(25, 22, 16, 0.04);
+  border-color: rgba(18, 48, 109, 0.1);
+  box-shadow: 0 8px 24px rgba(8, 20, 47, 0.04);
 }
 
 .city-icon {
@@ -1783,7 +1783,7 @@ body.lightbox-open {
 }
 
 .footer-logo .logo-text .highlight {
-  color: #dec37c;
+  color: #ff7a83;
 }
 
 .footer-logo-img-wrapper {
@@ -1803,7 +1803,7 @@ body.lightbox-open {
 }
 
 .footer-logo-img {
-  height: 28px;
+  height: 64px;
   width: auto;
   object-fit: contain;
 }
@@ -1821,9 +1821,9 @@ body.lightbox-open {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #dec37c;
-  background-color: rgba(222, 195, 124, 0.1);
-  border: 1px solid rgba(222, 195, 124, 0.25);
+  color: #ff7a83;
+  background-color: rgba(255, 122, 131, 0.1);
+  border: 1px solid rgba(255, 122, 131, 0.25);
   padding: 4px 12px;
   border-radius: var(--radius-full);
 }
@@ -1886,7 +1886,7 @@ body.lightbox-open {
 }
 
 a.contact-value:hover {
-  color: #dec37c;
+  color: #ff7a83;
 }
 
 .footer-bottom {
@@ -1982,7 +1982,7 @@ a.contact-value:hover {
 .mobile-call-btn {
   background-color: var(--accent);
   color: var(--white);
-  box-shadow: 0 4px 14px rgba(149, 107, 35, 0.35);
+  box-shadow: 0 4px 14px rgba(204, 25, 38, 0.35);
 }
 
 .mobile-call-btn:active {
